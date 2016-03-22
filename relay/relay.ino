@@ -6,7 +6,7 @@
 Adafruit_PN532 nfc(IRQ, RESET);
 
 void setup(void) {
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(13, OUTPUT);
   pinMode(12, OUTPUT); // When HIGH, will close relay connection
   pinMode(11, OUTPUT); // When HIGH, will open relay connection
@@ -14,15 +14,16 @@ void setup(void) {
   nfc.SAMConfig();
 }
 boolean bikeOn = false;
+uint8_t auth_uids[][7] = {
+  // Scan your tag with a phone and place appropriate bytes below
+  // prefxing each one with "0x" and delimiting with a comma ","
+  {0x12, 0xFE, 0x12, 0x4E, 0x00, 0x00, 0x00}  // Description of Particluar Tag
+  // ,{0xFE, 0xE2, 0x70, 0x5A, 0x00, 0x00, 0x00} // Add a second one like so
+};
 
 void loop(void) {
   //Authorized UIDs
-  uint8_t auth_uids[][7] = {
-    // Scan your tag with a phone and place appropriate bytes below
-    // prefxing each one with "0x" and delimiting with a comma ","
-    {0x12, 0xFE, 0x12, 0x4E, 0x00, 0x00, 0x00}  // Description of Particluar Tag
-    // ,{0xFE, 0xE2, 0x70, 0x5A, 0x00, 0x00, 0x00} // Add a second one like so
-  };
+
   uint8_t success;
   uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };
   uint8_t uidLength;
